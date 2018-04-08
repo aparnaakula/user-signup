@@ -46,9 +46,13 @@ def index():
             if password != verify_password:
                 verify_password_error = 'Passwords do not match.'
 
-        if (email != '') and (not re.match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$', email)):
+        if ('@' not in email) or ('.' not in email):
             email_error = 'This is not a valid email.'
             email = ''
+        else:
+            if (" " in email) and (len(email)<3 and len(email)>20):
+                email_error ='Email must be 3-20 characters and not contain spaces'
+                email = ''
 
         if (not username_error) and (not password_error) and (not verify_password_error) and (not email_error):
             return redirect('/confirmation?username={0}'.format(username))
@@ -67,3 +71,4 @@ def confirmation():
 
 if __name__ == '__main__':
  app.run()
+               
